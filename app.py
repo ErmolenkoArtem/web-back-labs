@@ -42,4 +42,21 @@ def image ():
 <html>
 '''
 
+
+count = 0
+
+@app.route("/counter")
+def counter():
+    global count
+    count += 1
+    return '''
+<!doctype html> \
+<html> \
+    <body> \
+        <h1>Сколько раз вы сюда заходили: "''' + str(count) + '''"</h1> \
+    <body> \
+<html>
+'''
+
+
         
