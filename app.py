@@ -26,7 +26,7 @@ def not_found(err):
         <style>
             body {
                 font-family: 'Arial';
-                background: linear-gradient(135deg, white 0%, black 100%);
+                background: linear-gradient(135deg, white 0%, lightblue 100%);
                 margin: 0;
                 padding: 20px;
                 min-height: 100vh;
@@ -34,7 +34,7 @@ def not_found(err):
             }
             .container {
                 text-align: center;
-                background: black;
+                background: skyblue;
                 padding: 40px;
                 border-radius: 20px;
                 box-shadow: 0 8px 32px #002;
@@ -422,3 +422,12 @@ def teapot():
     </body>
 </html>
 ''', 418
+
+
+@app.route('/lab2/a')
+
+def a():
+    return 'без слэша'
+@app.route('/lab2/a/')
+def a2():
+    return 'со слэшем'
