@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, make_response, redirect
+from flask import Blueprint, render_template, request, make_response, redirect # type: ignore
 
 lab3 = Blueprint('lab3', __name__)
 
