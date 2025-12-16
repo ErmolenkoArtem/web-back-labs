@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 4{% endblock %}
+
+{% block main %}
+<style>
+    .fridge-container {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 30px;
+        background: linear-gradient(135deg, #fff8e1, #ffecb3);
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        font-family: 'Trebuchet MS', sans-serif;
+    }
+
+    .fridge-title {
+        text-align: center;
+        color: #f9a825;
+        margin-bottom: 30px;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .temperature-form {
+        background: #fffde7;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #6d4c41;
+    }
+
+    .temperature-input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ffd54f;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+    }
+
+    .temperature-input:focus {
+        outline: none;
+        border-color: #f9a825;
+        box-shadow: 0 0 8px rgba(249, 168, 37, 0.35);
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #fbc02d, #f9a825);
+        color: #4e342e;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(249, 168, 37, 0.45);
+    }
+
+    .error-message {
+        background: #fff3e0;
+        color: #e65100;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #ef6c00;
+        margin: 20px 0;
+        font-weight: bold;
+    }
+
+    .success-message {
+        background: #fffde7;
+        color: #6d4c41;
+        padding: 20px;
+        border-radius: 10px;
+        border-left: 4px solid #fbc02d;
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .temperature-display {
+        font-size: 24px;
+        font-weight: bold;
+        color: #f9a825;
+        margin-bottom: 15px;
+    }
+
+    .snowflakes {
+        font-size: 36px;
+        color: #fbc02d;
+        text-align: center;
+        margin: 15px 0;
+    }
+
+    .info-box {
+        background: #fff8e1;
+        padding: 20px;
+        border-radius: 10px;
+        border-left: 4px solid #f9a825;
+        margin-top: 25px;
+    }
+
+    .info-title {
+        color: #f9a825;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .range-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .range-list li {
+        padding: 8px 0;
+        border-bottom: 1px solid #ffecb3;
+    }
+
+    .range-list li:last-child {
+        border-bottom: none;
+    }
+</style>
+
+<div class="fridge-container">
+    <div class="fridge-title">❄️ Управление холодильником</div>
+    
+    <div class="temperature-form">
+        <form method="post">
+            <div class="form-group">
+                <label for="temperature">Температура (°С):</label>
+                <input type="number" id="temperature" name="temperature" 
+                    class="temperature-input"
+                    value="{{ temperature }}"
+                    placeholder="Введите температуру от -12 до -1">
+            </div>
+            <button type="submit" class="submit-btn">Установить температуру</button>
+        </form>
+    </div>
+    
+    {% if error %}
+        <div class="error-message">
+            ⚠️ {{ error }}
+        </div>
+    {% endif %}
+    
+    {% if success %}
+        <div class="success-message">
+            <div class="temperature-display">✅ Установлена температура: {{ temperature }}°С</div>
+            <div class="snowflakes">
+                {% for i in range(snowflakes) %}
+                    ❄️
+                {% endfor %}
+            </div>
+            <div style="color: #6d4c41; font-size: 14px;">
+                Уровень охлаждения: 
+                {% if snowflakes == 3 %}максимальный
+                {% elif snowflakes == 2 %}средний
+                {% else %}минимальный
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="info-box">
+        <div class="info-title">📊 Диапазоны температур:</div>
+        <ul class="range-list">
+            <li>❄️❄️❄️ <strong>-12°С — -9°С</strong> - максимальное охлаждение</li>
+            <li>❄️❄️ <strong>-8°С — -5°С</strong> - среднее охлаждение</li>
+            <li>❄️ <strong>-4°С — -1°С</strong> - минимальное охлаждение</li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

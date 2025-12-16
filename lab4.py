@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, session
+from flask import Blueprint, render_template, request, redirect, session # type: ignore
 lab4 = Blueprint('lab4', __name__)
 
 
@@ -180,3 +180,96 @@ def login():
 def logout():
     session.pop('login', None)
     return redirect('/lab4/login')
+
+
+@lab4.route('/lab4/fridge', methods=['GET', 'POST'])
+def fridge():
+    if request.method == 'GET':
+        return render_template('lab4/fridge.html')
+    
+    temperature = request.form.get('temperature')
+    
+    # Проверка на пустое значение
+    if temperature == '':
+        return render_template('lab4/fridge.html', error='Ошибка: не задана температура')
+    
+    temperature = int(temperature)
+    
+    # Проверка диапазонов
+    if temperature < -12:
+        return render_template('lab4/fridge.html', error='Не удалось установить температуру — слишком низкое значение')
+    
+    if temperature > -1:
+        return render_template('lab4/fridge.html', error='Не удалось установить температуру — слишком высокое значение')
+    
+    # Определение количества снежинок
+    if -12 <= temperature <= -9:
+        snowflakes = 3
+    elif -8 <= temperature <= -5:
+        snowflakes = 2
+    elif -4 <= temperature <= -1:
+        snowflakes = 1
+    else:
+        snowflakes = 0
+    
+    return render_template('lab4/fridge.html', 
+                        temperature=temperature, 
+                        snowflakes=snowflakes, 
+                        success=True)
+
+
+@lab4.route('/lab4/grain', methods=['GET', 'POST'])
+def grain():
+    if request.method == 'GET':
+        return render_template('lab4/grain.html')
+    
+    grain_type = request.form.get('grain_type')
+    weight = request.form.get('weight')
+    
+    # Проверка на пустой вес
+    if weight == '':
+        return render_template('lab4/grain.html', error='Ошибка: не указан вес заказа')
+    
+    weight = float(weight)
+    
+    # Проверка на неположительный вес
+    if weight <= 0:
+        return render_template('lab4/grain.html', error='Ошибка: вес должен быть больше 0')
+    
+    # Проверка на слишком большой объем
+    if weight > 100:
+        return render_template('lab4/grain.html', error='Такого объёма сейчас нет в наличии')
+    
+    # Цены на зерно
+    prices = {
+        'barley': 12000,  # ячмень
+        'oats': 8500,     # овёс
+        'wheat': 9000,    # пшеница
+        'rye': 15000      # рожь
+    }
+    
+    # Названия зерна для вывода
+    grain_names = {
+        'barley': 'ячмень',
+        'oats': 'овёс', 
+        'wheat': 'пшеница',
+        'rye': 'рожь'
+    }
+    
+    # Расчет стоимости
+    price_per_ton = prices[grain_type]
+    total = weight * price_per_ton
+    
+    # Применение скидки 10% за объем более 10 тонн
+    discount = 0
+    if weight > 10:
+        discount = total * 0.10
+        total -= discount
+    
+    return render_template('lab4/grain.html',
+                        success=True,
+                        grain_name=grain_names[grain_type],
+                        weight=weight,
+                        total=total,
+                        discount=discount,
+                        has_discount=weight > 10)
