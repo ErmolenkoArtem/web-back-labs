@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 7{% endblock %}
+
+{% block style %}
+:root {
+    --yellow-main: #facc15;     /* основной жёлтый */
+    --yellow-light: #fef9c3;    /* светлый фон */
+    --yellow-soft: #fffbeb;     /* почти белый */
+    --yellow-dark: #ca8a04;     /* тёмный жёлтый */
+    --border: #e5e7eb;
+    --text-main: #3f2f00;
+}
+
+/* Таблица */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 16px;
+    background-color: var(--yellow-soft);
+    border: 2px solid var(--yellow-main);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    font-size: 14px;
+}
+
+th {
+    background-color: var(--yellow-main);
+    color: var(--text-main);
+    text-align: left;
+    font-weight: 700;
+}
+
+tr:nth-child(even) {
+    background-color: var(--yellow-light);
+}
+
+tr:hover {
+    background-color: #fde68a;
+}
+
+/* Кнопки */
+button {
+    padding: 7px 12px;
+    border-radius: 8px;
+    border: 2px solid var(--yellow-dark);
+    background-color: var(--yellow-light);
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+button:hover {
+    background-color: var(--yellow-main);
+}
+
+button:active {
+    background-color: #eab308;
+}
+
+button.primary {
+    background-color: var(--yellow-main);
+    border-color: var(--yellow-dark);
+    color: var(--text-main);
+}
+
+button.primary:hover {
+    background-color: #eab308;
+}
+
+/* Модальное окно */
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(202, 138, 4, 0.35);
+}
+
+.modal-content {
+    background-color: var(--yellow-soft);
+    padding: 18px;
+    border-radius: 12px;
+    min-width: 340px;
+    max-width: 480px;
+    border: 3px solid var(--yellow-main);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: var(--text-main);
+}
+
+/* Поля формы */
+.modal-row {
+    margin-bottom: 12px;
+}
+
+.modal-row label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.modal-row input,
+.modal-row textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 7px 9px;
+    border-radius: 8px;
+    border: 2px solid var(--yellow-main);
+    font-size: 14px;
+    background-color: #ffffff;
+}
+
+.modal-row textarea {
+    resize: vertical;
+}
+
+/* Кнопки в модалке */
+.modal-buttons {
+    text-align: right;
+    margin-top: 12px;
+}
+
+/* Ошибка */
+.error-message {
+    color: #b91c1c;
+    margin-bottom: 10px;
+    display: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Оригинальное название */
+.original-title {
+    font-style: italic;
+    color: #92400e;
+}
+{% endblock %}
+
+
+{% block main %}
+<h1>Фильмы</h1>
+
+<button class="primary" onclick="showModal()">Добавить фильм</button>
+
+<table>
+    <thead>
+        <tr>
+            <th>Название (ориг.)</th>
+            <th>Название (рус.)</th>
+            <th>Год</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody id="film-table-body"></tbody>
+</table>
+
+<div class="modal">
+    <div class="modal-content">
+        <h2>Фильм</h2>
+
+        <div id="error-message" class="error-message"></div>
+
+        <div class="modal-row">
+            <label for="film-title-ru">Название (русское)</label>
+            <input id="film-title-ru" type="text">
+        </div>
+
+        <div class="modal-row">
+            <label for="film-title">Название (оригинальное)</label>
+            <input id="film-title" type="text">
+        </div>
+
+        <div class="modal-row">
+            <label for="film-year">Год</label>
+            <input id="film-year" type="number">
+        </div>
+
+        <div class="modal-row">
+            <label for="film-description">Описание</label>
+            <textarea id="film-description" rows="4"></textarea>
+        </div>
+
+        <div class="modal-buttons">
+            <button class="primary" onclick="sendFilm()">ОК</button>
+            <button onclick="hideModal()">Отмена</button>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='lab7/main.js') }}"></script>
+<script>
+    fillFilmList();
+</script>
+{% endblock %}

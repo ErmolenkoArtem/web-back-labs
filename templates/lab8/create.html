@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{% block main %}
+<style>
+    :root {
+        --lab8-blue-main: #facc15;
+        --lab8-blue-light: #fef9c3;
+        --lab8-text-main: #3f2f00;
+        --lab8-text-muted: #6b5a00;
+        --lab8-border: #fde68a;
+        --lab8-radius-lg: 18px;
+        --lab8-radius-md: 12px;
+        --lab8-transition: 0.18s ease;
+    }
+
+    .lab8-auth-page {
+        max-width: 720px;
+        margin: 28px auto 40px;
+        padding: 0 16px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .lab8-auth-title {
+        text-align: center;
+        font-size: 26px;
+        font-weight: 600;
+        color: var(--lab8-text-main);
+        margin-bottom: 18px;
+    }
+
+    .lab8-form-card {
+        background: #ffffff;
+        border-radius: var(--lab8-radius-lg);
+        padding: 22px 20px 20px;
+        border: 1px solid var(--lab8-border);
+        box-shadow: 0 8px 20px rgba(202, 138, 4, 0.10);
+    }
+
+    .lab8-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 14px;
+        font-size: 14px;
+        color: var(--lab8-text-main);
+    }
+
+    .lab8-field label {
+        font-weight: 600;
+    }
+
+    .lab8-input, .lab8-textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 9px 11px;
+        border-radius: var(--lab8-radius-md);
+        border: 1px solid var(--lab8-border);
+        background: #ffffff;
+        font-size: 14px;
+        transition: border-color var(--lab8-transition), background var(--lab8-transition);
+    }
+
+    .lab8-textarea {
+        min-height: 220px;
+        resize: vertical;
+        line-height: 1.5;
+    }
+
+    .lab8-input:focus, .lab8-textarea:focus {
+        outline: none;
+        border-color: var(--lab8-blue-main);
+        background: var(--lab8-blue-light);
+    }
+
+    .lab8-error {
+        padding: 10px 12px;
+        border-radius: var(--lab8-radius-md);
+        background: #fff1f2;
+        color: #9b1c1c;
+        border: 1px solid #fecdd3;
+        margin-bottom: 14px;
+        font-size: 14px;
+    }
+
+    .lab8-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+    }
+
+    .lab8-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border: none;
+        border-radius: var(--lab8-radius-md);
+        background: var(--lab8-blue-main);
+        color: #3f2f00;
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background var(--lab8-transition), transform var(--lab8-transition);
+        text-decoration: none;
+    }
+
+    .lab8-btn:hover {
+        background: #eab308;
+        transform: translateY(-1px);
+    }
+
+    .lab8-btn-secondary {
+        background: #ffffff;
+        color: var(--lab8-text-main);
+        border: 1px solid var(--lab8-border);
+    }
+
+    .lab8-btn-secondary:hover {
+        background: var(--lab8-blue-light);
+        border-color: #f59e0b;
+        color: #7a4b00;
+    }
+</style>
+
+<div class="lab8-auth-page">
+    <h1 class="lab8-auth-title">Создать статью</h1>
+
+    <div class="lab8-form-card">
+        {% if error %}
+            <div class="lab8-error">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" action="/lab8/create">
+            <div class="lab8-field">
+                <label>Заголовок</label>
+                <input class="lab8-input" type="text" name="title" placeholder="Введите заголовок">
+            </div>
+
+            <div class="lab8-field">
+                <label>Текст статьи</label>
+                <textarea class="lab8-textarea" name="article_text" placeholder="Введите текст статьи"></textarea>
+            </div>
+
+            <div class="lab8-actions">
+                <button class="lab8-btn" type="submit">➕ Создать</button>
+                <a class="lab8-btn lab8-btn-secondary" href="/lab8/articles/">← К списку статей</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

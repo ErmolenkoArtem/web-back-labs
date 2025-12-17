@@ -4,249 +4,216 @@
 
 {% block main %}
 <style>
-    :root {
-        --lab5-blue-main: #d97706;
-        --lab5-blue-light: #fff7cc;
-        --lab5-blue-soft: #fffbea;
-        --lab5-text-main: #3a2a00;
-        --lab5-text-muted: #7a5a00;
-        --lab5-border: #f3d37a;
-        --lab5-radius-lg: 20px;
-        --lab5-radius-md: 12px;
-        --lab5-transition: 0.18s ease;
+    /* “2-курсник” стиль: громко, криво, но работает */
+    :root{
+      --bg: #e8ffea;
+      --card: #ffffff;
+      --border: #000;
+      --accent1: #ff00c8;
+      --accent2: #00d9ff;
+      --accent3: #ffee00;
+      --text: #111;
+      --muted: #444;
     }
-
-    .lab5-page {
-        max-width: 1100px;
-        margin: 24px auto 44px;
-        padding: 0 16px;
-        box-sizing: border-box;
-        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  
+    *{ box-sizing: border-box; }
+  
+    body{
+      background: var(--bg);
+      font-family: "Comic Sans MS", "Segoe UI", Arial, sans-serif;
     }
-
-    .lab5-hero {
-        background: linear-gradient(120deg, #f59e0b, #fbbf24);
-        border-radius: var(--lab5-radius-lg);
-        padding: 18px 20px;
-        color: #3a2a00;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 16px;
-        box-shadow: 0 14px 30px rgba(217, 119, 6, 0.28);
+  
+    .lab5-page{
+      max-width: 980px;
+      margin: 10px auto;
+      padding: 8px;
+      border: 3px dashed var(--border);
+      background: linear-gradient(90deg, rgba(255,0,200,.10), rgba(0,217,255,.10));
     }
-
-    .lab5-hero-left {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
+  
+    /* Шапка */
+    .lab5-hero{
+      background: repeating-linear-gradient(
+        45deg,
+        var(--accent3),
+        var(--accent3) 12px,
+        #fff 12px,
+        #fff 24px
+      );
+      border: 4px solid var(--border);
+      padding: 12px;
+      border-radius: 6px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 8px 8px 0 rgba(0,0,0,.35);
     }
-
-    .lab5-hero-kicker {
-        font-size: 11px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        opacity: 0.95;
+  
+    .lab5-hero-title{
+      margin: 0;
+      font-size: 30px;
+      color: var(--text);
+      text-shadow: 2px 2px 0 var(--accent1);
+      letter-spacing: 1px;
     }
-
-    .lab5-hero-title {
-        margin: 0;
-        font-size: 24px;
-        font-weight: 900;
+  
+    .lab5-hero-sub{
+      margin: 8px 0 0;
+      font-size: 14px;
+      color: var(--muted);
+      background: rgba(255,255,255,.75);
+      border: 2px dotted #333;
+      padding: 6px;
     }
-
-    .lab5-hero-sub {
-        margin: 0;
-        font-size: 13px;
-        opacity: 0.95;
-        max-width: 520px;
+  
+    .lab5-hero-user{
+      background: var(--accent2);
+      border: 3px solid var(--border);
+      padding: 8px 10px;
+      border-radius: 2px;
+      transform: rotate(1.5deg);
+      box-shadow: 4px 4px 0 rgba(0,0,0,.35);
+      min-width: 160px;
+      text-align: center;
     }
-
-    .lab5-hero-user {
-        padding: 7px 13px;
-        border-radius: 999px;
-        background: #fffdf2;
-        color: #3a2a00;
-        font-size: 13px;
-        border: 1px solid rgba(243,211,122,0.95);
-        white-space: nowrap;
+  
+    .lab5-hero-user span{
+      font-weight: 900;
+      color: #000;
     }
-
-    .lab5-hero-user span {
-        font-weight: 800;
+  
+    /* Навигация */
+    .lab5-nav{
+      margin: 14px 0;
+      padding: 10px;
+      background: #fff;
+      border: 3px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      box-shadow: 6px 6px 0 rgba(0,0,0,.25);
     }
-
-    .lab5-nav {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin: 16px 0 22px;
+  
+    .lab5-nav a{
+      text-decoration: underline;
+      color: #000;
+      background: var(--accent1);
+      border: 2px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 0;
+      font-size: 14px;
+      font-weight: 700;
+      display: inline-block;
+      transition: transform .08s linear;
     }
-
-    .lab5-nav a {
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--lab5-text-main);
-        padding: 7px 14px;
-        border-radius: 999px;
-        border: 1px solid var(--lab5-border);
-        background: #fffdf2;
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        transition:
-            background var(--lab5-transition),
-            border-color var(--lab5-transition),
-            color var(--lab5-transition),
-            transform var(--lab5-transition);
+  
+    .lab5-nav a:nth-child(2n){
+      background: var(--accent2);
     }
-
-    .lab5-nav a:hover {
-        background: var(--lab5-blue-light);
-        border-color: #f4c430;
-        color: #7a3f00;
-        transform: translateY(-1px);
+    .lab5-nav a:nth-child(3n){
+      background: var(--accent3);
     }
-
-    .lab5-main {
-        display: grid;
-        grid-template-columns: minmax(0, 1.35fr) minmax(0, 1.05fr);
-        gap: 22px;
-        align-items: flex-start;
+  
+    .lab5-nav a:hover{
+      transform: translateY(-3px) rotate(-1deg);
     }
-
-    .lab5-main-card {
-        border-radius: var(--lab5-radius-lg);
-        border: 1px solid var(--lab5-border);
-        background: #fffdf2;
-        padding: 18px 18px 16px;
-        box-shadow: 0 10px 22px rgba(217,119,6,0.10);
+  
+    /* Основной контент */
+    .lab5-main{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
-
-    .lab5-main-title {
-        margin: 0 0 10px;
-        font-size: 26px;
-        color: var(--lab5-text-main);
-        font-weight: 900;
+  
+    .lab5-main-card,
+    .lab5-side-card{
+      background: var(--card);
+      border: 4px double var(--border);
+      border-radius: 4px;
+      padding: 10px;
+      box-shadow: 10px 10px 0 rgba(0,0,0,.18);
     }
-
-    .lab5-text {
-        margin: 0;
-        font-size: 14px;
-        color: var(--lab5-text-muted);
-        line-height: 1.65;
+  
+    .lab5-main-title{
+      margin: 0 0 10px;
+      font-size: 24px;
+      color: #000;
+      background: rgba(255,238,0,.45);
+      padding: 6px;
+      border-left: 8px solid var(--accent1);
     }
-
-    .lab5-side-card {
-        border-radius: var(--lab5-radius-lg);
-        border: 1px solid var(--lab5-border);
-        background: var(--lab5-blue-soft);
-        padding: 14px 14px 12px;
-        box-shadow: 0 10px 22px rgba(217,119,6,0.08);
+  
+    .lab5-text{
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.4;
+      color: #000;
     }
-
-    .lab5-side-title {
-        margin: 0 0 10px;
-        font-size: 14px;
-        font-weight: 900;
-        color: var(--lab5-text-main);
+  
+    /* Боковая панель “что можно делать” */
+    .lab5-side-title{
+      margin: 0 0 10px;
+      font-size: 16px;
+      color: #000;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-bottom: 3px dashed #000;
+      padding-bottom: 6px;
     }
-
-    .lab5-feature-list {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 10px;
+  
+    .lab5-feature-list{
+      display: block;
     }
-
-    .lab5-feature {
-        border-radius: var(--lab5-radius-md);
-        border: 1px solid #f4e3b4;
-        background: #fffdf2;
-        padding: 10px 10px 9px;
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 8px 10px;
-        align-items: flex-start;
-        transition:
-            background var(--lab5-transition),
-            border-color var(--lab5-transition),
-            transform var(--lab5-transition),
-            box-shadow var(--lab5-transition);
+  
+    .lab5-feature{
+      border: 2px solid #000;
+      background: #f7f7f7;
+      padding: 8px;
+      margin: 10px 0;
     }
-
-    .lab5-feature:hover {
-        background: var(--lab5-blue-light);
-        border-color: #f4c430;
-        transform: translateY(-1px);
-        box-shadow: 0 12px 24px rgba(217,119,6,0.18);
+  
+    .lab5-feature-icon{
+      width: 34px;
+      height: 34px;
+      border: 2px solid #000;
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-right: 8px;
     }
-
-    .lab5-feature-icon {
-        width: 30px;
-        height: 30px;
-        border-radius: 999px;
-        background: #fff2b3;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 17px;
+  
+    .lab5-feature-title{
+      display: inline-block;
+      margin: 0;
+      font-size: 16px;
+      font-weight: 900;
+      color: #000;
+      background: rgba(0,217,255,.25);
+      padding: 2px 6px;
     }
-
-    .lab5-feature-title {
-        margin: 1px 0 2px;
-        font-size: 14px;
-        font-weight: 900;
-        color: var(--lab5-text-main);
+  
+    .lab5-feature-text{
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: #222;
     }
-
-    .lab5-feature-text {
-        grid-column: 2 / 3;
-        margin: 0;
-        font-size: 13px;
-        color: var(--lab5-text-muted);
-        line-height: 1.55;
+  
+    /* Мобильная адаптация “на коленке” */
+    @media (max-width: 900px){
+      .lab5-main{ grid-template-columns: 1fr; }
+      .lab5-hero{ flex-direction: column; }
+      .lab5-hero-user{ align-self: flex-end; }
     }
-
-    .lab5-footer-note {
-        margin-top: 22px;
-        font-size: 11px;
-        color: var(--lab5-text-muted);
-        text-align: right;
+  
+    @media (max-width: 520px){
+      .lab5-nav a{ width: 100%; text-align: center; }
+      .lab5-hero-title{ font-size: 24px; }
     }
-
-    @media (max-width: 900px) {
-        .lab5-main {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @media (max-width: 700px) {
-        .lab5-hero {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .lab5-hero-user {
-            align-self: flex-end;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .lab5-nav a {
-            flex: 1 1 auto;
-            justify-content: center;
-        }
-
-        .lab5-hero-title {
-            font-size: 22px;
-        }
-
-        .lab5-main-title {
-            font-size: 22px;
-        }
-    }
-</style>
+  </style>
+  
 
 <div class="lab5-page">
     <header class="lab5-hero">

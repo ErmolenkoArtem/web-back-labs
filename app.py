@@ -1,24 +1,63 @@
-from flask import Flask, url_for, request # type: ignore
+from flask import Flask, url_for, request
 import datetime
 import os
+from os import path
+from flask_sqlalchemy import SQLAlchemy
+from db import db
+from db.models import users
+from flask_login import LoginManager
+
 from lab1 import lab1
 from lab2 import lab2
 from lab3 import lab3
 from lab4 import lab4
 from lab5 import lab5
+from lab6 import lab6
+from lab7 import lab7
+from lab8 import lab8
+from lab9 import lab9
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'секретно-секретный секрет')
+login_manager = LoginManager()
+login_manager.login_view = 'lab8.login'
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_users(login_id):
+    return users.query.get(int(login_id))
+
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'super-secret-key-2025')
 app.config['DB_TYPE'] = os.getenv('DB_TYPE', 'postgres')
+
+if app.config['DB_TYPE'] == 'postgres':
+    db_name = 'artem_ermolenko_orm'
+    db_user = 'artem_ermolenko_orm'
+    db_password = '123'
+    host_ip = '127.0.0.1'
+    host_port = 5432
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = \
+        f'postgresql://{db_user}:{db_password}@{host_ip}:{host_port}/{db_name}'
+else:
+    dir_path = path.dirname(path.realpath(__file__))
+    db_path = path.join(dir_path, "artem_ermolenko_orm.db")
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+
+db.init_app(app)
 
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
 app.register_blueprint(lab3)
 app.register_blueprint(lab4)
 app.register_blueprint(lab5)
+app.register_blueprint(lab6)
+app.register_blueprint(lab7)
+app.register_blueprint(lab8)
+app.register_blueprint(lab9)
 
 access_log = []
+
 
 @app.before_request
 def log_requests():
@@ -27,6 +66,7 @@ def log_requests():
     requested_url = request.url
     log_entry = f"{access_date} - IP: {client_ip} - URL: {requested_url}"
     access_log.append(log_entry)
+
 
 @app.errorhandler(404)
 def not_found(err):
@@ -42,7 +82,7 @@ def not_found(err):
         <style>
             body {
                 font-family: 'Arial';
-                background: linear-gradient(135deg, white 0%, lightblue 100%);
+                background: linear-gradient(135deg, white 0%, blue 100%);
                 margin: 0;
                 padding: 20px;
                 min-height: 100vh;
@@ -119,7 +159,7 @@ def not_found(err):
             <img src="''' + url_for("static", filename="404.jpg") + '''" class="cat-image" alt="Ошибка 404">
                 
             <div class="cat-404">
-                О КАК... Страницы нет!
+                БЛЯЯЯЯЯЯЯЯЯстящий ход... Но страницы нет!
             </div>
             
             <a href="/" class="home-button">На главную страницу</a>
@@ -141,6 +181,7 @@ def not_found(err):
 </html>
 ''', 404
 
+
 @app.errorhandler(500)
 def internal_server_error(err):
     return '''
@@ -158,10 +199,12 @@ def internal_server_error(err):
 </html>
 ''', 500
 
+
 @app.route('/error500')
 def cause_error():
     result = 10 / 0
     return "Эта строка никогда не выполнится"
+
 
 @app.route("/")
 @app.route("/index")
@@ -180,11 +223,15 @@ def index():
         
         <main>
             <ol>
-                <li><a href="/lab1">Первая лабораторная</a></li>
-                <li><a href="/lab2">Вторая лабораторная</a></li>
+                <li><a href="/lab1/">Первая лабораторная</a></li>
+                <li><a href="/lab2/">Вторая лабораторная</a></li>
                 <li><a href="/lab3/">Третья лабораторная</a></li>
                 <li><a href="/lab4/">Четвёртая лабораторная</a></li>
                 <li><a href="/lab5/">Пятая лабораторная</a></li>
+                <li><a href="/lab6/">Шестая лабораторная</a></li>
+                <li><a href="/lab7/">Седьмая лабораторная</a></li>
+                <li><a href="/lab8/">Восьмая лабораторная</a></li>
+                <li><a href="/lab9/">Девятая лабораторная</a></li>
             </ol>
         </main>
         
