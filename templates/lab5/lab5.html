@@ -5,35 +5,35 @@
 {% block main %}
 <style>
     :root {
-        --lab5-blue-main: #2563eb;
-        --lab5-blue-light: #e3f0ff;
-        --lab5-blue-soft: #f3f6ff;
-        --lab5-text-main: #111827;
-        --lab5-text-muted: #6b7280;
-        --lab5-border: #d1d5db;
-        --lab5-radius-lg: 18px;
+        --lab5-blue-main: #d97706;
+        --lab5-blue-light: #fff7cc;
+        --lab5-blue-soft: #fffbea;
+        --lab5-text-main: #3a2a00;
+        --lab5-text-muted: #7a5a00;
+        --lab5-border: #f3d37a;
+        --lab5-radius-lg: 20px;
         --lab5-radius-md: 12px;
         --lab5-transition: 0.18s ease;
     }
 
     .lab5-page {
         max-width: 1100px;
-        margin: 24px auto 40px;
+        margin: 24px auto 44px;
         padding: 0 16px;
         box-sizing: border-box;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     .lab5-hero {
-        background: linear-gradient(120deg, #2563eb, #60a5fa);
+        background: linear-gradient(120deg, #f59e0b, #fbbf24);
         border-radius: var(--lab5-radius-lg);
         padding: 18px 20px;
-        color: #f9fafb;
+        color: #3a2a00;
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 16px;
-        box-shadow: 0 12px 26px rgba(37, 99, 235, 0.25);
+        box-shadow: 0 14px 30px rgba(217, 119, 6, 0.28);
     }
 
     .lab5-hero-left {
@@ -51,8 +51,8 @@
 
     .lab5-hero-title {
         margin: 0;
-        font-size: 22px;
-        font-weight: 600;
+        font-size: 24px;
+        font-weight: 900;
     }
 
     .lab5-hero-sub {
@@ -65,15 +65,15 @@
     .lab5-hero-user {
         padding: 7px 13px;
         border-radius: 999px;
-        background: #ffffff;
-        color: #111827;
+        background: #fffdf2;
+        color: #3a2a00;
         font-size: 13px;
-        border: 1px solid rgba(209,213,219,0.9);
+        border: 1px solid rgba(243,211,122,0.95);
         white-space: nowrap;
     }
 
     .lab5-hero-user span {
-        font-weight: 500;
+        font-weight: 800;
     }
 
     .lab5-nav {
@@ -86,12 +86,12 @@
     .lab5-nav a {
         text-decoration: none;
         font-size: 13px;
-        font-weight: 500;
+        font-weight: 700;
         color: var(--lab5-text-main);
         padding: 7px 14px;
         border-radius: 999px;
         border: 1px solid var(--lab5-border);
-        background: #ffffff;
+        background: #fffdf2;
         display: inline-flex;
         align-items: center;
         gap: 7px;
@@ -104,8 +104,8 @@
 
     .lab5-nav a:hover {
         background: var(--lab5-blue-light);
-        border-color: #93c5fd;
-        color: #1d4ed8;
+        border-color: #f4c430;
+        color: #7a3f00;
         transform: translateY(-1px);
     }
 
@@ -119,21 +119,23 @@
     .lab5-main-card {
         border-radius: var(--lab5-radius-lg);
         border: 1px solid var(--lab5-border);
-        background: #ffffff;
+        background: #fffdf2;
         padding: 18px 18px 16px;
+        box-shadow: 0 10px 22px rgba(217,119,6,0.10);
     }
 
     .lab5-main-title {
         margin: 0 0 10px;
-        font-size: 24px;
+        font-size: 26px;
         color: var(--lab5-text-main);
+        font-weight: 900;
     }
 
     .lab5-text {
         margin: 0;
         font-size: 14px;
         color: var(--lab5-text-muted);
-        line-height: 1.6;
+        line-height: 1.65;
     }
 
     .lab5-side-card {
@@ -141,12 +143,13 @@
         border: 1px solid var(--lab5-border);
         background: var(--lab5-blue-soft);
         padding: 14px 14px 12px;
+        box-shadow: 0 10px 22px rgba(217,119,6,0.08);
     }
 
     .lab5-side-title {
         margin: 0 0 10px;
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 900;
         color: var(--lab5-text-main);
     }
 
@@ -158,8 +161,8 @@
 
     .lab5-feature {
         border-radius: var(--lab5-radius-md);
-        border: 1px solid #e5e7eb;
-        background: #ffffff;
+        border: 1px solid #f4e3b4;
+        background: #fffdf2;
         padding: 10px 10px 9px;
         display: grid;
         grid-template-columns: auto 1fr;
@@ -174,16 +177,16 @@
 
     .lab5-feature:hover {
         background: var(--lab5-blue-light);
-        border-color: #bfdbfe;
+        border-color: #f4c430;
         transform: translateY(-1px);
-        box-shadow: 0 10px 22px rgba(148,163,184,0.35);
+        box-shadow: 0 12px 24px rgba(217,119,6,0.18);
     }
 
     .lab5-feature-icon {
         width: 30px;
         height: 30px;
         border-radius: 999px;
-        background: var(--lab5-blue-soft);
+        background: #fff2b3;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -193,7 +196,7 @@
     .lab5-feature-title {
         margin: 1px 0 2px;
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 900;
         color: var(--lab5-text-main);
     }
 
@@ -202,7 +205,7 @@
         margin: 0;
         font-size: 13px;
         color: var(--lab5-text-muted);
-        line-height: 1.5;
+        line-height: 1.55;
     }
 
     .lab5-footer-note {
@@ -236,11 +239,11 @@
         }
 
         .lab5-hero-title {
-            font-size: 20px;
+            font-size: 22px;
         }
 
         .lab5-main-title {
-            font-size: 20px;
+            font-size: 22px;
         }
     }
 </style>
@@ -259,10 +262,14 @@
     </header>
 
     <nav class="lab5-nav">
-        <a href="/lab5/list">📚 <span>Список статей</span></a>
-        <a href="/lab5/create">✏️ <span>Создать статью</span></a>
+        <!-- всегда доступно -->
+        <a href="/lab5/public">🌍 <span>Публичные статьи</span></a>
 
         {% if login %}
+            <a href="/lab5/list">📚 <span>Мои статьи</span></a>
+            <a href="/lab5/create">✏️ <span>Создать статью</span></a>
+            <a href="/lab5/users">👥 <span>Пользователи</span></a>
+            <a href="/lab5/profile">⚙️ <span>Профиль</span></a>
             <a href="/lab5/logout">🚪 <span>Выйти</span></a>
         {% else %}
             <a href="/lab5/login">🔑 <span>Войти</span></a>

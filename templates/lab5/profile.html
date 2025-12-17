@@ -15,55 +15,43 @@
         --lab5-transition: 0.18s ease;
     }
 
-    .lab5-form-page {
-        max-width: 680px;
-        margin: 38px auto 44px;
+    .lab5-auth-page {
+        max-width: 480px;
+        margin: 34px auto 44px;
         padding: 0 12px;
         font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    .lab5-form-title {
+    .lab5-auth-title {
         text-align: center;
         font-size: 28px;
-        font-weight: 900;
+        font-weight: 800;
         color: var(--lab5-text-main);
-        margin-bottom: 22px;
+        margin-bottom: 18px;
     }
 
     .lab5-form-card {
         background: #fffdf2;
         border-radius: var(--lab5-radius-lg);
-        padding: 26px 24px 28px;
+        padding: 24px 22px 26px;
         border: 1px solid var(--lab5-border);
         box-shadow: 0 10px 26px rgba(217, 119, 6, 0.14);
-    }
-
-    .lab5-error {
-        background: #fff1c2;
-        color: #7a3f00;
-        border: 1px solid #f4c430;
-        padding: 10px 12px;
-        border-radius: var(--lab5-radius-md);
-        margin-bottom: 18px;
-        font-size: 14px;
-        font-weight: 700;
     }
 
     .lab5-field {
         display: flex;
         flex-direction: column;
         gap: 6px;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
         font-size: 14px;
         color: var(--lab5-text-main);
     }
 
     .lab5-field label {
-        font-weight: 800;
+        font-weight: 700;
     }
 
-    .lab5-input,
-    .lab5-textarea {
+    .lab5-input {
         padding: 10px 12px;
         border-radius: var(--lab5-radius-md);
         border: 1px solid var(--lab5-border);
@@ -72,48 +60,41 @@
         transition: border-color var(--lab5-transition), background var(--lab5-transition);
     }
 
-    .lab5-input:focus,
-    .lab5-textarea:focus {
+    .lab5-input:focus {
         outline: none;
         border-color: var(--lab5-blue-main);
         background: var(--lab5-blue-light);
     }
 
-    .lab5-textarea {
-        resize: vertical;
-        min-height: 170px;
-    }
-
-    .lab5-options {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px 18px;
-        margin-bottom: 8px;
-        font-size: 13px;
+    .lab5-input[disabled] {
+        background: #fff7e0;
         color: var(--lab5-text-muted);
     }
 
-    .lab5-checkbox {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        cursor: pointer;
+    .lab5-hint {
+        font-size: 12px;
+        color: var(--lab5-text-muted);
     }
 
-    .lab5-checkbox input {
-        width: 14px;
-        height: 14px;
+    .lab5-error {
+        padding: 10px 12px;
+        border-radius: var(--lab5-radius-md);
+        background: #fff1c2;
+        color: #7a3f00;
+        border: 1px solid #f4c430;
+        margin-bottom: 18px;
+        font-size: 14px;
     }
 
     .lab5-submit {
         width: 100%;
-        margin-top: 8px;
+        margin-top: 6px;
         padding: 11px 0;
         border: none;
         border-radius: var(--lab5-radius-md);
         background: var(--lab5-blue-main);
         color: #fffaf0;
-        font-weight: 900;
+        font-weight: 800;
         font-size: 15px;
         cursor: pointer;
         transition: background var(--lab5-transition), transform var(--lab5-transition);
@@ -153,8 +134,8 @@
     }
 </style>
 
-<div class="lab5-form-page">
-    <h1 class="lab5-form-title">Создание статьи</h1>
+<div class="lab5-auth-page">
+    <h1 class="lab5-auth-title">Профиль пользователя</h1>
 
     <div class="lab5-form-card">
         {% if error %}
@@ -163,31 +144,27 @@
 
         <form method="post">
             <div class="lab5-field">
-                <label>Название статьи</label>
-                <input class="lab5-input" type="text" name="title" maxlength="50"
-                    value="{{ title or '' }}">
+                <label>Логин</label>
+                <input class="lab5-input" type="text" value="{{ login }}" disabled>
             </div>
 
             <div class="lab5-field">
-                <label>Текст статьи</label>
-                <textarea class="lab5-textarea" name="article_text">{{ article_text or '' }}</textarea>
+                <label>Имя</label>
+                <input class="lab5-input" type="text" name="real_name" value="{{ real_name or '' }}">
             </div>
 
-            <div class="lab5-options">
-                <label class="lab5-checkbox">
-                    <input type="checkbox" name="is_favorite"
-                        {% if is_favorite %}checked{% endif %}>
-                    <span>Сделать любимой</span>
-                </label>
-
-                <label class="lab5-checkbox">
-                    <input type="checkbox" name="is_public"
-                        {% if is_public %}checked{% endif %}>
-                    <span>Сделать публичной</span>
-                </label>
+            <div class="lab5-field">
+                <label>Новый пароль</label>
+                <input class="lab5-input" type="password" name="password">
+                <span class="lab5-hint">Оставьте пустым, если не хотите менять пароль.</span>
             </div>
 
-            <button class="lab5-submit" type="submit">Готово</button>
+            <div class="lab5-field">
+                <label>Подтверждение пароля</label>
+                <input class="lab5-input" type="password" name="password_confirm">
+            </div>
+
+            <button class="lab5-submit" type="submit">Сохранить изменения</button>
         </form>
     </div>
 </div>
