@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% block lab %}РГЗ{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='rgz/main.js')}}"></script>
+<script>
+function renderMenu() {
+    const menu = document.getElementById("menu");
+    
+    menu.innerHTML = `
+        {% if session.get('user_id') %}
+            <button class="menu-btn" onclick="showAddForm()">Добавить сотрудника</button>
+            <button class="menu-btn" onclick="logoutUser()">Выйти</button>
+            <button class="menu-btn" onclick="confirmDeleteAccount()">Удалить аккаунт</button>
+        {% else %}
+            <a href="/rgz/login" class="menu-btn">Войти</a>
+            <a href="/rgz/register" class="menu-btn">Регистрация</a>
+        {% endif %}
+    `;
+}
+
+function showAddForm() {
+    document.getElementById('id').value = '';
+    document.getElementById('full_name').value = '';
+    document.getElementById('position').value = '';
+    document.getElementById('gender').value = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('trial').value = '';
+    document.getElementById('hire_date').value = '';
+    
+    document.getElementById('fullname-error').innerText = '';
+    document.getElementById('position-error').innerText = '';
+    document.getElementById('gender-error').innerText = '';
+    document.getElementById('phone-error').innerText = '';
+    document.getElementById('email-error').innerText = '';
+    document.getElementById('trial-error').innerText = '';
+    document.getElementById('hire-date-error').innerText = '';
+    
+    showModal();
+}
+
+// Обновляем цвета кнопок в JavaScript тоже
+document.addEventListener('DOMContentLoaded', function() {
+    const sortButtons = document.querySelectorAll('button[onclick*="sortBy"]');
+    sortButtons.forEach(btn => {
+        btn.style.backgroundColor = '#FFD700';
+        btn.style.color = '#8B7500';
+        btn.style.border = '2px solid #FFA500';
+    });
+});
+</script>
+{% endblock %}
+
+{% block style%}
+<style>
+/* Дополнительные стили для жёлтой темы */
+body {
+    background-color: #fffef0;
+}
+
+button {
+    background-color: #FFD700;
+    color: #8B7500;
+    border: 2px solid #FFA500;
+}
+
+button:hover {
+    background-color: #FFA500;
+    color: white;
+}
+
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    border: 1px solid #D8000C;
+}
+</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='rgz/main.css')}}">
+{% endblock %}
+
+{% block main %}
+<div class="menu" id="menu">
+</div>
+<script>
+    renderMenu();
+</script>
+
+<h1>Добро пожаловать в систему отдела кадров</h1>
+
+<input type="text" id="search-input" placeholder="Поиск сотрудников..." oninput="searchEmployees()">
+
+<div style="text-align: center; margin: 20px 0;">
+    <button onclick="sortBy('full_name')">Сортировать по ФИО</button>
+    <button onclick="sortBy('position')">Сортировать по должности</button>
+    <button onclick="sortBy('email')">Сортировать по email</button>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>ФИО</th>
+            <th>Должность</th>
+            <th>E-mail</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody id="employee-list">
+    </tbody>
+</table>
+<script>
+    fillEmployeeList();
+</script>
+
+<button id="load-more-btn" onclick="showMore()">Показать ещё</button>
+
+<div class="modal">
+    <div style="background:#FFF8DC; padding:30px; border-radius:15px; width:450px; position:relative; border:3px solid #FFD700;">
+        <h2 style="color:#8B7500;">Данные сотрудника</h2>
+        <input type="hidden" id="id">
+
+        <label style="color:#8B7500;">ФИО: <input type="text" id="full_name" style="border:2px solid #FFD700;"></label>
+        <div id="fullname-error" class="error"></div>
+
+        <label style="color:#8B7500;">Должность: <input type="text" id="position" style="border:2px solid #FFD700;"></label>
+        <div id="position-error" class="error"></div>
+
+        <label style="color:#8B7500;">Пол: 
+            <select id="gender" style="border:2px solid #FFD700;">
+                <option value="М">Мужской</option>
+                <option value="Ж">Женский</option>
+            </select>
+        </label>
+        <div id="gender-error" class="error"></div>
+
+        <label style="color:#8B7500;">Телефон: 
+            <input type="text" id="phone" placeholder="+79991234567" required style="border:2px solid #FFD700;">
+        </label>
+        <div id="phone-error" class="error"></div>
+
+        <label style="color:#8B7500;">Email: 
+            <input type="email" id="email" placeholder="example@mail.ru" required style="border:2px solid #FFD700;">
+        </label>
+        <div id="email-error" class="error"></div>
+
+        <label style="color:#8B7500;">Испытательный срок: 
+            <select id="trial" style="border:2px solid #FFD700;">
+                <option value="1">Да</option>
+                <option value="0">Нет</option>
+            </select>
+        </label>
+        <div id="trial-error" class="error"></div>
+
+        <label style="color:#8B7500;">Дата устройства: <input type="date" id="hire_date" style="border:2px solid #FFD700;"></label>
+        <div id="hire-date-error" class="error"></div>
+
+        <div style="margin-top:20px; text-align:center;">
+            <button onclick="sendEmployee()" style="background-color:#FFA500; color:white; border:2px solid #FF8C00;">Сохранить</button>
+            <button onclick="cancel()" style="background-color:#FFD700; color:#8B7500; border:2px solid #FFA500;">Отмена</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function logoutUser() {
+    fetch('/rgz/rest-api/logout', {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success || data.message) {
+            window.location.href = '/rgz';
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка выхода:', error);
+    });
+}
+</script>
+
+{% endblock %}

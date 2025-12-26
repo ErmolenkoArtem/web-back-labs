@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block style %}
+<style>
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #FFF8DC;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border: 3px solid #FFD700;
+}
+
+h2 {
+    text-align: center;
+    color: #8B7500;
+    margin-bottom: 25px;
+    font-size: 26px;
+}
+
+div {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    padding: 12px;
+    border: 2px solid #FFD700;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    background-color: #fffef0;
+    color: #333;
+}
+
+input:focus {
+    outline: none;
+    border-color: #FFA500;
+    box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
+}
+
+button {
+    padding: 14px;
+    background-color: #FFA500;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+    border: 2px solid #FF8C00;
+}
+
+button:hover {
+    background-color: #FF8C00;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(139, 117, 0, 0.2);
+}
+
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    border: 1px solid #D8000C;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 6px;
+    text-align: center;
+}
+.success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.container p {
+    text-align: center;
+    margin-top: 20px;
+    color: #8B7500;
+}
+
+.container a {
+    color: #FF8C00;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.container a:hover {
+    text-decoration: underline;
+    color: #FF4500;
+}
+</style>
+{% endblock %}
+{% block main %}
+    <div class="container">
+        <h2>Регистрация кадровика</h2>
+        
+        <input type="text" id="fullname" placeholder="Ваше ФИО">
+        <input type="text" id="username" placeholder="Логин">
+        <input type="password" id="password" placeholder="Пароль">
+        
+        <button onclick="registerUser()">Зарегистрироваться</button>
+        
+        <div id="message" class="message"></div>
+        
+        <p>Уже есть аккаунт? <a href="/rgz/login">Войти</a></p>
+    </div>
+{% endblock %}
+{% block script %}
+<script>
+function registerUser() {
+    const fullname = document.getElementById('fullname').value.trim();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const msg = document.getElementById('message');
+    
+    msg.textContent = '';
+    msg.className = '';
+    
+    if (!fullname || !username || !password) {
+        msg.textContent = 'Заполните все поля!';
+        msg.className = 'error';
+        return;
+    }
+    
+    fetch('/rgz/rest-api/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({fullname, username, password})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            msg.textContent = 'Регистрация успешна! Теперь войдите.';
+            msg.className = 'success';
+            setTimeout(() => {
+                window.location.href = '/rgz/login';
+            }, 1500);
+        } else {
+            msg.textContent = data.error || 'Ошибка';
+            msg.className = 'error';
+        }
+    })
+    .catch(() => {
+        msg.textContent = 'Ошибка соединения';
+        msg.className = 'error';
+    });
+}
+</script>
+{% endblock %}
